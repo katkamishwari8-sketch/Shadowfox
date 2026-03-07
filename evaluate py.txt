@@ -1,0 +1,37 @@
+"""
+evaluate.py
+
+Evaluation script for computing metrics.
+"""
+
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sentiment_analysis import SentimentAnalyzer
+
+
+def evaluate_model():
+    analyzer = SentimentAnalyzer()
+
+    test_data = [
+        ("I love this!", "POSITIVE"),
+        ("I hate this!", "NEGATIVE"),
+        ("This is terrible.", "NEGATIVE"),
+        ("Absolutely fantastic experience.", "POSITIVE"),
+        ("Worst product ever.", "NEGATIVE"),
+        ("Best purchase I made.", "POSITIVE")
+    ]
+
+    texts = [x[0] for x in test_data]
+    true_labels = [x[1] for x in test_data]
+
+    predictions = analyzer.batch_predict(texts)
+    predicted_labels = [p["label"] for p in predictions]
+
+    print("Accuracy:", accuracy_score(true_labels, predicted_labels))
+    print("\nClassification Report:\n")
+    print(classification_report(true_labels, predicted_labels))
+    print("Confusion Matrix:\n")
+    print(confusion_matrix(true_labels, predicted_labels))
+
+
+if __name__ == "__main__":
+    evaluate_model()
